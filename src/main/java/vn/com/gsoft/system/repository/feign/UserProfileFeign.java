@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import vn.com.gsoft.system.response.BaseResponse;
 
-@FeignClient(name = "wnt-security")
+@FeignClient(name = "wnt-lm-security")
 public interface UserProfileFeign {
     @GetMapping("/profile")
     BaseResponse getProfile();
