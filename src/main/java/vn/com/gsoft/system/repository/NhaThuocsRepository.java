@@ -27,6 +27,7 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             + " OR (:#{#param.toDate} IS NULL OR c.Created <= :#{#param.toDate}) OR (c.Modified IS NOT NULL AND c.Modified <= :#{#param.toDate}))"
             + " AND ((:#{#param.hoatDong} IS NULL) OR (c.RecordStatusId = :#{#param.recordStatusId})) "
             + " AND ((:#{#param.createdByUserId} IS NULL) OR (c.CreatedBy_UserId = :#{#param.createdByUserId}))"
+            + " AND ((:#{#param.entityId} IS NULL) OR (c.entityId = :#{#param.entityId}))"
             + " AND ((:#{#param.tinhThanhId} IS NULL) OR (c.TinhThanhId = :#{#param.tinhThanhId}))"
             + " AND ((:#{#param.textSearch} IS NULL OR lower(c.TenNhaThuoc) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%'))))"
             + " OR (:#{#param.textSearch} IS NULL OR lower(c.DiaChi) LIKE lower(concat('%',CONCAT(:#{#param.textSearch},'%')))))"
