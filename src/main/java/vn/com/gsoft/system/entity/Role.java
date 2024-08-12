@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor

@@ -2,12 +2,10 @@ package vn.com.gsoft.system.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import vn.com.gsoft.system.model.dto.UserProfileRes;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,6 +15,7 @@ import vn.com.gsoft.system.model.dto.UserProfileRes;
 public class UserProfile extends BaseEntity{
     @Id
     @Column(name = "Id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @Column(name = "UserId")
     private Long userId;

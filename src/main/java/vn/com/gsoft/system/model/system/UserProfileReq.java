@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class UserProfileReq extends BaseRequest {
 
