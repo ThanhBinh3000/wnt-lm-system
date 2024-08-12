@@ -55,6 +55,6 @@ management:
 logging:
   file:
     path: /app/log
-  logstash:
-    host: localhost
-    port: 5000
+  #logstash:
+  #  host: localhost
+  #  port: 5000
