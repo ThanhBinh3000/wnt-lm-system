@@ -132,7 +132,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         nhaThuoc.setCreated(new Date());
         nhaThuoc.setCreatedByUserId(userInfo.getId());
         nhaThuoc.setRecordStatusId(RecordStatusContains.ACTIVE);
-        BeanUtils.copyProperties(req, nhaThuoc, "maNhaThuoc");
+        BeanUtils.copyProperties(req, nhaThuoc, "maNhaThuoc","created", "createdByUserId", "recordStatusId");
         hdrRepo.save(nhaThuoc);
         //lưu tài khoản
         UserProfile userProfile = new UserProfile();
@@ -143,6 +143,10 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         userProfile.setCreated(new Date());
         userProfile.setCreatedByUserId(userInfo.getId());
         userProfile.setHoatDong(true);
+        userProfile.setUserId(0L);
+        userProfile.setCityId(0L);
+        userProfile.setRegionId(0L);
+        userProfile.setWardId(0L);
         userProfileRepository.save(userProfile);
         //lưu lịch sử
         LichSuCapNhatThanhVien lichSuCapNhatThanhVien = new LichSuCapNhatThanhVien();

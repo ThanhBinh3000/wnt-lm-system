@@ -2,6 +2,7 @@ package vn.com.gsoft.system.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import vn.com.gsoft.system.model.system.BaseRequest;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class NhaThuocsReq extends BaseRequest {
     private String maNhaThuoc;
