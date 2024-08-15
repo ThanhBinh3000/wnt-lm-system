@@ -73,33 +73,6 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     }
 
     @Override
-    public  List<Entity> searchListEntity(EntityReq rq) throws Exception {
-        return entityRepository.searchList(rq);
-    }
-    @Override
-    public List<LichSuCapNhatThanhVien> searchLichSuCapNhatThanhVien(String maThanhVien) throws Exception {
-        var list = lichSuCapNhatThanhVienRepository.findLichSuCapNhatThanhVienByMaThanhVien(maThanhVien);
-        if(!list.stream().isParallel()){
-            list.forEach(item->{
-                switch (item.getStatusId()){
-                    case StatusConstant.ADD -> {
-                        item.setStatusName("Tạo mới");
-                        break;
-                    }
-                    case StatusConstant.UPDATE -> {
-                        item.setStatusName("Cập nhật");
-                        break;
-                    }
-                    case StatusConstant.DELETE -> {
-                        item.setStatusName("Xóa khỏi thành viên");
-                        break;
-                    }
-                }
-            });
-        }
-        return list;
-    }
-    @Override
     public NhaThuocs create(NhaThuocsReq req) throws Exception{
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
