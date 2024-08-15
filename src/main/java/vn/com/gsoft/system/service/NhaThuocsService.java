@@ -10,10 +10,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NhaThuocsService extends BaseService<NhaThuocs, NhaThuocsReq, Long> {
-
-    List<Entity> searchListEntity(EntityReq rq) throws Exception;
-
-    List<LichSuCapNhatThanhVien> searchLichSuCapNhatThanhVien(String maThanhVien) throws Exception;
-
     Boolean deleteByMaNhaThuoc(NhaThuocsReq req) throws Exception;
 }

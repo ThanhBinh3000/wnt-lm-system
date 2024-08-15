@@ -62,14 +62,9 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.delete(idSearchReq.getId())));
     }
 
-    @PostMapping(value =  PathConstant.URL_SEARCH_LIST + "-cap-thanh-vien", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_DELETE + "-by-ma-nha-thuoc", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> searchListCapThanhVien(@Valid @RequestBody EntityReq rq) throws Exception {
-        return ResponseEntity.ok(ResponseUtils.ok(service.searchListEntity(rq)));
-    }
-    @PostMapping(value =  PathConstant.URL_SEARCH_LIST + "-lich-su-thanh-vien", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> searchListLichSuThanhVien(@Valid @RequestBody LichSuCapNhatThanhVienReq rq) throws Exception {
-        return ResponseEntity.ok(ResponseUtils.ok(service.searchLichSuCapNhatThanhVien(rq.getMaThanhVien())));
+    public ResponseEntity<BaseResponse> deleteByMaNhaThuoc(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.deleteByMaNhaThuoc(objReq)));
     }
 }

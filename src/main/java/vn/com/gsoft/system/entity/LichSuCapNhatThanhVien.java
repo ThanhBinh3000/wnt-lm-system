@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @jakarta.persistence.Entity
 @Table(name = "LichSuCapNhatThanhVien")
-public class LichSuCapNhatThanhVien {
+public class LichSuCapNhatThanhVien extends BaseEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy= GenerationType.IDENTITY)
