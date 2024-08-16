@@ -52,13 +52,6 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     }
 
     @Override
-    public Page<UserStaffProfileRes> searchPageStaffManagement(UserProfileReq req) throws Exception {
-        Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
-        req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
-        return DataUtils.convertPage(hdrRepo.searchPageStaffManagement(req, pageable), UserStaffProfileRes.class);
-    }
-
-    @Override
     public Boolean changePassword(ChangePasswordReq req) throws Exception {
         Long userId = getLoggedUser().getId();
         if (!req.getNewPassword().equals(req.getConfirmPassword())) {
@@ -210,11 +203,5 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
 
         hdrRepo.save(e);
         return e;
-    }
-
-    @Override
-    public List<UserStaffProfileRes> searchListStaffManagement(UserProfileReq req) throws Exception {
-        req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
-        return DataUtils.convertList(hdrRepo.searchListStaffManagement(req), UserStaffProfileRes.class);
     }
 }

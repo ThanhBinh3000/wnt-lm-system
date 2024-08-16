@@ -4,14 +4,10 @@ import org.springframework.data.domain.Page;
 import vn.com.gsoft.system.entity.UserProfile;
 import vn.com.gsoft.system.model.dto.ChangePasswordReq;
 import vn.com.gsoft.system.model.dto.UserProfileReq;
-import vn.com.gsoft.system.model.dto.UserProfileRes;
-import vn.com.gsoft.system.model.dto.UserStaffProfileRes;
 
 import java.util.List;
 
 public interface UserProfileService extends BaseService<UserProfile, UserProfileReq, Long> {
-
-    Page<UserStaffProfileRes> searchPageStaffManagement(UserProfileReq objReq) throws Exception;
 
     Boolean changePassword(ChangePasswordReq objReq) throws Exception;
 
@@ -24,6 +20,4 @@ public interface UserProfileService extends BaseService<UserProfile, UserProfile
     UserProfile insertStaff(UserProfileReq objReq) throws Exception;
 
     UserProfile updateStaff(UserProfileReq objReq) throws Exception;
-
-    List<UserStaffProfileRes> searchListStaffManagement(UserProfileReq objReq) throws Exception;
 }

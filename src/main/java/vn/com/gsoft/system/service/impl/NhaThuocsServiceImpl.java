@@ -20,6 +20,7 @@ import vn.com.gsoft.system.model.dto.*;
 import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.*;
 import vn.com.gsoft.system.service.NhaThuocsService;
+import vn.com.gsoft.system.util.system.StoreHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -101,7 +102,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
             throw new Exception("Tên tài khoản dùng để đăng nhập đã tồn tại.");
         }
         NhaThuocs nhaThuoc = new NhaThuocs();
-        nhaThuoc.setMaNhaThuoc("TVM");
+        nhaThuoc.setMaNhaThuoc(getNewStoreCode());
         nhaThuoc.setCreated(new Date());
         nhaThuoc.setCreatedByUserId(userInfo.getId());
         nhaThuoc.setRecordStatusId(RecordStatusContains.ACTIVE);
@@ -109,7 +110,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         hdrRepo.save(nhaThuoc);
         //lưu tài khoản
         UserProfile userProfile = new UserProfile();
-        userProfile.setMaNhaThuoc("TVM" + nhaThuoc.getId());
+        userProfile.setMaNhaThuoc(req.getMaNhaThuoc());
         userProfile.setUserName(req.getUserName());
         userProfile.setPassword(passwordEncoder.encode(req.getPassword()));
         userProfile.setTenDayDu(req.getTenNhaThuoc());
@@ -117,9 +118,9 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         userProfile.setCreatedByUserId(userInfo.getId());
         userProfile.setHoatDong(true);
         userProfile.setUserId(0L);
-        userProfile.setCityId(0L);
-        userProfile.setRegionId(0L);
-        userProfile.setWardId(0L);
+        userProfile.setCityId(req.getCityId() > 0 ? req.getCityId() : 0L);
+        userProfile.setRegionId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
+        userProfile.setWardId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
         userProfileRepository.save(userProfile);
         //lưu lịch sử
         LichSuCapNhatThanhVien lichSuCapNhatThanhVien = new LichSuCapNhatThanhVien();
@@ -149,6 +150,11 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
 
         nhaThuoc.setTenNhaThuoc(req.getTenNhaThuoc());
         nhaThuoc.setEntityId(req.getEntityId());
+        nhaThuoc.setEmail(req.getEmail());
+        nhaThuoc.setDiaChi(req.getDiaChi());
+        nhaThuoc.setCityId(req.getCityId() > 0 ? req.getCityId() : 0L);
+        nhaThuoc.setRegionId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
+        nhaThuoc.setWardId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
         nhaThuoc.setModified(new Date());
         nhaThuoc.setModifiedByUserId(userInfo.getId());
         hdrRepo.save(nhaThuoc);
@@ -181,4 +187,28 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         lichSuCapNhatThanhVienRepository.save(lichSuCapNhatThanhVien);
         return true;
     }
+    //region PRIVATE
+    private String getNewStoreCode() throws Exception {
+        String code = "0000";
+        Optional<NhaThuocs> optional = hdrRepo.findLatestRecord();
+        if (optional.isEmpty()) return code;
+        NhaThuocs lastDs = optional.get();
+        Long lastDsIdNumber;
+        try {
+            lastDsIdNumber = Long.parseLong(lastDs.getMaNhaThuoc());
+        } catch (NumberFormatException e) {
+            lastDsIdNumber = 0L;
+        }
+        if (lastDsIdNumber == 0) lastDsIdNumber = lastDs.getId();
+        lastDsIdNumber++;
+        code = StoreHelper.getCodeBasedOnNumber(lastDsIdNumber);
+        while (true) {
+            NhaThuocs byMaNT = hdrRepo.findByMaNhaThuoc(code);
+            if (byMaNT == null) break;
+            lastDsIdNumber++;
+            code = StoreHelper.getCodeBasedOnNumber(lastDsIdNumber);
+        }
+        return code;
+    }
+    //endregion
 }

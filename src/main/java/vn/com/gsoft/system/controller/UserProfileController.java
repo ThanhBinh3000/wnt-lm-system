@@ -40,20 +40,6 @@ public class UserProfileController {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
     }
 
-    @Operation(summary = "Tra cứu", description = "Tra cứu")
-    @PostMapping(value = PathConstant.URL_SEARCH_PAGE + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> colectionPageStaffManagement(@RequestBody UserProfileReq objReq) throws Exception {
-        return ResponseEntity.ok(ResponseUtils.ok(service.searchPageStaffManagement(objReq)));
-    }
-
-    @Operation(summary = "Tra cứu", description = "Tra cứu")
-    @PostMapping(value = PathConstant.URL_SEARCH_LIST + "-staff-management", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> colectionListStaffManagement(@RequestBody UserProfileReq objReq) throws Exception {
-        return ResponseEntity.ok(ResponseUtils.ok(service.searchListStaffManagement(objReq)));
-    }
-
     @Operation(summary = "Tạo mới", description = "Tạo mới")
     @PostMapping(value = PathConstant.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
