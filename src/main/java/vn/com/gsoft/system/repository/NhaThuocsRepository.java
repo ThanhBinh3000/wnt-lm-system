@@ -47,4 +47,9 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
 
     NhaThuocs findByMaNhaThuoc(String maNhaThuoc);
 
+    @Query("SELECT c FROM NhaThuocs c " +
+            " WHERE 1=1 " +
+            " ORDER BY c.created DESC" +
+            " LIMIT 1")
+    Optional<NhaThuocs> findLatestRecord();
 }

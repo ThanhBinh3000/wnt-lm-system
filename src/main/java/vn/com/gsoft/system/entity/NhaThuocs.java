@@ -17,6 +17,7 @@ import java.util.Date;
 @Table(name = "NhaThuocs")
 public class NhaThuocs extends BaseEntity {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
     @Column(name = "MaNhaThuoc")
