@@ -11,4 +11,5 @@ import java.util.Optional;
 
 public interface NhaThuocsService extends BaseService<NhaThuocs, NhaThuocsReq, Long> {
     Boolean deleteByMaNhaThuoc(NhaThuocsReq req) throws Exception;
+    NhaThuocs getDetail(String maCoSo);
 }

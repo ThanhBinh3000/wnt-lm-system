@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import vn.com.gsoft.system.constant.RecordStatusContains;
 import vn.com.gsoft.system.entity.BaseEntity;
+import vn.com.gsoft.system.entity.NhaThuocs;
 import vn.com.gsoft.system.model.system.BaseRequest;
 import vn.com.gsoft.system.model.system.Profile;
 import vn.com.gsoft.system.repository.BaseRepository;

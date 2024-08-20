@@ -7,11 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.codec.Hex;
-import org.springframework.security.crypto.keygen.BytesKeyGenerator;
-import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.util.EncodingUtils;
 import org.springframework.stereotype.Service;
 import vn.com.gsoft.system.constant.RecordStatusContains;
 import vn.com.gsoft.system.constant.StatusConstant;
@@ -23,7 +19,6 @@ import vn.com.gsoft.system.service.NhaThuocsService;
 import vn.com.gsoft.system.util.system.StoreHelper;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,6 +59,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
             throw new Exception("Bad request.");
+        req.setRecordStatusId(req.isActive() ? RecordStatusContains.ACTIVE : RecordStatusContains.DELETED);
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         Page<NhaThuocs> nhaThuocs = hdrRepo.searchPage(req, pageable);
         nhaThuocs.getContent().forEach(item->{
@@ -77,6 +73,8 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     public NhaThuocs create(NhaThuocsReq req) throws Exception{
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
+            throw new Exception("Bad request.");
+        if (!userInfo.getIsAdmin())
             throw new Exception("Bad request.");
         if(req.getTenNhaThuoc() == null || req.getTenNhaThuoc().isEmpty()){
             throw new Exception("Tên thành viên không được null.");
@@ -106,7 +104,9 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         nhaThuoc.setCreated(new Date());
         nhaThuoc.setCreatedByUserId(userInfo.getId());
         nhaThuoc.setRecordStatusId(RecordStatusContains.ACTIVE);
-        BeanUtils.copyProperties(req, nhaThuoc, "maNhaThuoc","created", "createdByUserId", "recordStatusId");
+        nhaThuoc.setEntityId(req.getLevelId());
+        BeanUtils.copyProperties(req, nhaThuoc, "maNhaThuoc","created", "createdByUserId",
+                "recordStatusId", "entityId");
         hdrRepo.save(nhaThuoc);
         //lưu tài khoản
         UserProfile userProfile = new UserProfile();
@@ -121,12 +121,13 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         userProfile.setCityId(req.getCityId() > 0 ? req.getCityId() : 0L);
         userProfile.setRegionId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
         userProfile.setWardId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
+        userProfile.setEntityId(Long.valueOf(req.getEntityId()));
         userProfileRepository.save(userProfile);
         //lưu lịch sử
         LichSuCapNhatThanhVien lichSuCapNhatThanhVien = new LichSuCapNhatThanhVien();
         lichSuCapNhatThanhVien.setStatusId(StatusConstant.ADD);
         lichSuCapNhatThanhVien.setMaThanhVien(userProfile.getMaNhaThuoc());
-        lichSuCapNhatThanhVien.setGhiChu(req.getDescription());
+        lichSuCapNhatThanhVien.setGhiChu(req.getDescription() != null ? req.getDescription() : StatusConstant.ADD_TXT);
         lichSuCapNhatThanhVien.setNgayCapNhat(new Date());
         lichSuCapNhatThanhVienRepository.save(lichSuCapNhatThanhVien);
         return nhaThuoc;
@@ -135,6 +136,8 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     public NhaThuocs update(NhaThuocsReq req) throws Exception{
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
+            throw new Exception("Bad request.");
+        if (!userInfo.getIsAdmin())
             throw new Exception("Bad request.");
         if(req.getTenNhaThuoc() == null || req.getTenNhaThuoc().isEmpty()){
             throw new Exception("Tên thành viên không được null.");
@@ -157,12 +160,22 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         nhaThuoc.setWardId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
         nhaThuoc.setModified(new Date());
         nhaThuoc.setModifiedByUserId(userInfo.getId());
+
         hdrRepo.save(nhaThuoc);
+        //update userprofile
+        var userProfiles = userProfileRepository.findByMaNhaThuoc(nhaThuoc.getMaNhaThuoc());
+        if(userProfiles != null){
+            userProfiles.forEach(x->{
+                x.setEntityId(Long.valueOf(req.getEntityId()));
+            });
+            userProfileRepository.saveAll(userProfiles);
+        }
+
         //lưu lịch sử
         LichSuCapNhatThanhVien lichSuCapNhatThanhVien = new LichSuCapNhatThanhVien();
         lichSuCapNhatThanhVien.setStatusId(StatusConstant.UPDATE);
         lichSuCapNhatThanhVien.setMaThanhVien(req.getMaNhaThuoc());
-        lichSuCapNhatThanhVien.setGhiChu(req.getDescription());
+        lichSuCapNhatThanhVien.setGhiChu(req.getDescription() != null ? req.getDescription() : StatusConstant.UPDATE_TXT);
         lichSuCapNhatThanhVien.setNgayCapNhat(new Date());
         lichSuCapNhatThanhVienRepository.save(lichSuCapNhatThanhVien);
         return nhaThuoc;
@@ -173,6 +186,8 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         Profile userInfo = this.getLoggedUser();
         if (userInfo == null)
             throw new Exception("Bad request.");
+        if (!userInfo.getIsAdmin())
+            throw new Exception("Bad request.");
         NhaThuocs nhaThuoc = hdrRepo.findByMaNhaThuoc(req.getMaNhaThuoc());
         nhaThuoc.setRecordStatusId(RecordStatusContains.DELETED);
         nhaThuoc.setModified(new Date());
@@ -182,11 +197,22 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         LichSuCapNhatThanhVien lichSuCapNhatThanhVien = new LichSuCapNhatThanhVien();
         lichSuCapNhatThanhVien.setStatusId(StatusConstant.DELETE);
         lichSuCapNhatThanhVien.setMaThanhVien(req.getMaNhaThuoc());
-        lichSuCapNhatThanhVien.setGhiChu(req.getDescription());
+        lichSuCapNhatThanhVien.setGhiChu(req.getDescription() != null ? req.getDescription() : StatusConstant.DELETE_TXT);
         lichSuCapNhatThanhVien.setNgayCapNhat(new Date());
         lichSuCapNhatThanhVienRepository.save(lichSuCapNhatThanhVien);
         return true;
     }
+
+    @Override
+    public NhaThuocs getDetail(String maCoSO){
+        var nhaThuoc = hdrRepo.findByMaNhaThuoc(maCoSO);
+        var entity = entityRepository.findById(nhaThuoc.getEntityId());
+        if(entity != null){
+            nhaThuoc.setLevel(entity.get().getName());
+        }
+        return nhaThuoc;
+    }
+
     //region PRIVATE
     private String getNewStoreCode() throws Exception {
         String code = "0000";

@@ -49,12 +49,11 @@ public class NhaThuocsController {
     }
 
 
-    @GetMapping(value = PathConstant.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = PathConstant.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> detail(@PathVariable("id") Long id) throws Exception {
-        return ResponseEntity.ok(ResponseUtils.ok(service.detail(id)));
+    public ResponseEntity<BaseResponse> detail(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.getDetail(objReq.getMaNhaThuoc())));
     }
-
 
     @PostMapping(value = PathConstant.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
