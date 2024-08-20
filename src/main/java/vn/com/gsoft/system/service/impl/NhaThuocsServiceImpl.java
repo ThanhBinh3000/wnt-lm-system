@@ -187,6 +187,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         lichSuCapNhatThanhVienRepository.save(lichSuCapNhatThanhVien);
         return true;
     }
+
     //region PRIVATE
     private String getNewStoreCode() throws Exception {
         String code = "0000";

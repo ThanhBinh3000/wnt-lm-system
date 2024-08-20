@@ -11,4 +11,5 @@ public class PrivilegeReq extends BaseRequest {
     private String parentCode;
     private String name;
     private Boolean enable;
+    private String MaCoSo;
 }
