@@ -2,6 +2,7 @@ package vn.com.gsoft.system.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,7 +42,6 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.create(objReq)));
     }
 
-
     @PostMapping(value = PathConstant.URL_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> update(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
@@ -49,10 +49,10 @@ public class NhaThuocsController {
     }
 
 
-    @PostMapping(value = PathConstant.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = PathConstant.URL_DETAIL, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BaseResponse> detail(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
-        return ResponseEntity.ok(ResponseUtils.ok(service.getDetail(objReq.getMaNhaThuoc())));
+    public ResponseEntity<BaseResponse> detail(@PathVariable("id") Long id) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.detail(id)));
     }
 
     @PostMapping(value = PathConstant.URL_DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,5 +65,11 @@ public class NhaThuocsController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> deleteByMaNhaThuoc(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.deleteByMaNhaThuoc(objReq)));
+    }
+
+    @PostMapping(value = "detail-by-ma-nha-thuoc", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> detailByMaNhaThuoc(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.detailByMa(objReq.getMaNhaThuoc())));
     }
 }
