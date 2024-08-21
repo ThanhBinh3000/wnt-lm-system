@@ -94,4 +94,6 @@ public interface UserProfileRepository extends BaseRepository<UserProfile, UserP
     )
     List<Tuple> searchListStaffManagement(@Param("param") UserProfileReq param);
     Optional<UserProfile> findByUserNameAndHoatDong(String userName, Boolean hoatDong);
+
+    List<UserProfile> findByMaNhaThuoc(String maNhaThuoc);
 }
