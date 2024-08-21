@@ -22,5 +22,7 @@ public class Entity extends BaseEntity{
     private String name;
     @Column(name = "Type")
     private Integer type;
+    @Column(name = "IsDefault")
+    private Integer isDefault;
 }
 

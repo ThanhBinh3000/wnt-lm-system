@@ -204,8 +204,18 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
     }
 
     @Override
-    public NhaThuocs getDetail(String maCoSO){
-        var nhaThuoc = hdrRepo.findByMaNhaThuoc(maCoSO);
+    public NhaThuocs detail(Long id) throws Exception{
+        var nhaThuoc = hdrRepo.findById(id);
+        var entity = entityRepository.findById(nhaThuoc.get().getEntityId());
+        if(entity != null){
+            nhaThuoc.get().setLevel(entity.get().getName());
+        }
+        return nhaThuoc.get();
+    }
+
+    @Override
+    public NhaThuocs detailByMa(String code) throws Exception{
+        var nhaThuoc = hdrRepo.findByMaNhaThuoc(code);
         var entity = entityRepository.findById(nhaThuoc.getEntityId());
         if(entity != null){
             nhaThuoc.setLevel(entity.get().getName());
