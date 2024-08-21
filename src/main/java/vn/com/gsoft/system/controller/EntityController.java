@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.gsoft.system.constant.PathConstant;
 import vn.com.gsoft.system.model.dto.EntityReq;
+import vn.com.gsoft.system.model.dto.PrivilegeReq;
 import vn.com.gsoft.system.response.BaseResponse;
 import vn.com.gsoft.system.service.EntityService;
 import vn.com.gsoft.system.util.system.ResponseUtils;
@@ -35,13 +36,11 @@ public class EntityController {
     return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
   }
 
-
   @PostMapping(value = PathConstant.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public ResponseEntity<BaseResponse> insert(@Valid @RequestBody EntityReq objReq) throws Exception {
     return ResponseEntity.ok(ResponseUtils.ok(service.create(objReq)));
   }
-
 
   @PostMapping(value = PathConstant.URL_UPDATE, produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)

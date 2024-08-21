@@ -25,5 +25,7 @@ public class Privilege extends BaseEntity{
     private String name;
     @Column(name = "Enable")
     private Boolean enable;
+    @Transient
+    private Boolean active;
 }
 

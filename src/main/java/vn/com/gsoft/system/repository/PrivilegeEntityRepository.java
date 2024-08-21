@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import vn.com.gsoft.system.model.dto.PrivilegeEntityReq;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PrivilegeEntityRepository extends BaseRepository<PrivilegeEntity, PrivilegeEntityReq, Long> {
@@ -33,4 +34,5 @@ public interface PrivilegeEntityRepository extends BaseRepository<PrivilegeEntit
   )
   List<PrivilegeEntity> searchList(@Param("param") PrivilegeEntityReq param);
 
+  Optional<PrivilegeEntity> findByEntityIdAndPrivilegeId(Long entityId, Long privilegeId);
 }
