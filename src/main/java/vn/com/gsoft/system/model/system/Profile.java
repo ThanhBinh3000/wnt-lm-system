@@ -36,11 +36,17 @@ public class Profile implements UserDetails, Serializable {
     private Long citiId;
     private Long regionId;
     private Long wardId;
+    private String tenNhaThuoc;
+    private String soDienThoai;
+    private String diaChi;
+    private Boolean isAdmin;
 
     public Profile(Long id, String fullName, NhaThuocs nhaThuoc, List<Role> roles,
                    String username, String password, boolean enabled, boolean accountNonExpired,
                    boolean credentialsNonExpired, boolean accountNonLocked, Set<CodeGrantedAuthority> authorities,
-                   String maCoSo, long citiId, long regionId, long wardId) {
+                   String maCoSo, Long citiId, Long regionId, Long wardId,
+                   String tenNhaThuoc, String soDienThoai, String diaChi,
+                   Boolean isAdmin) {
         this.id = id;
         this.fullName = fullName;
         this.roles = roles;
@@ -55,5 +61,9 @@ public class Profile implements UserDetails, Serializable {
         this.citiId = citiId;
         this.regionId = regionId;
         this.wardId = wardId;
+        this.tenNhaThuoc = tenNhaThuoc;
+        this.soDienThoai = soDienThoai;
+        this.diaChi = diaChi;
+        this.isAdmin = isAdmin;
     }
 }

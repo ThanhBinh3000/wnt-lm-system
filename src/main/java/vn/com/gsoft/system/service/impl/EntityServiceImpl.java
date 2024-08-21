@@ -20,5 +20,4 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity, EntityReq, Long> 
         super(hdrRepo);
         this.hdrRepo = hdrRepo;
     }
-
 }
