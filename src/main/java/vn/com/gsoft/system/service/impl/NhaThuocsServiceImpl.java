@@ -118,9 +118,9 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         userProfile.setCreatedByUserId(userInfo.getId());
         userProfile.setHoatDong(true);
         userProfile.setUserId(0L);
-        userProfile.setCityId(req.getCityId() > 0 ? req.getCityId() : 0L);
-        userProfile.setRegionId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
-        userProfile.setWardId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
+        nhaThuoc.setCityId(req.getCityId() > 0 ? req.getCityId() : 0L);
+        nhaThuoc.setRegionId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
+        nhaThuoc.setWardId(req.getWardId() > 0 ? req.getWardId() : 0L);
         userProfile.setEntityId(Long.valueOf(req.getEntityId()));
         userProfileRepository.save(userProfile);
         //lưu lịch sử
@@ -157,7 +157,7 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
         nhaThuoc.setDiaChi(req.getDiaChi());
         nhaThuoc.setCityId(req.getCityId() > 0 ? req.getCityId() : 0L);
         nhaThuoc.setRegionId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
-        nhaThuoc.setWardId(req.getRegionId() > 0 ? req.getRegionId() : 0L);
+        nhaThuoc.setWardId(req.getWardId() > 0 ? req.getWardId() : 0L);
         nhaThuoc.setModified(new Date());
         nhaThuoc.setModifiedByUserId(userInfo.getId());
 
