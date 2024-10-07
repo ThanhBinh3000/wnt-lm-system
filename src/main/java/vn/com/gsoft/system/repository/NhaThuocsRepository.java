@@ -52,4 +52,5 @@ public interface NhaThuocsRepository extends BaseRepository<NhaThuocs, NhaThuocs
             " ORDER BY c.created DESC" +
             " LIMIT 1")
     Optional<NhaThuocs> findLatestRecord();
+    List<NhaThuocs> findByMaNhaChaAndRecordStatusId(String maNhaCha, Long recordStatusId);
 }

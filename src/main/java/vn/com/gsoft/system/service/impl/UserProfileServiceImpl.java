@@ -47,7 +47,7 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
     public Page<UserProfile> searchPage(UserProfileReq req) throws Exception {
         Pageable pageable = PageRequest.of(req.getPaggingReq().getPage(), req.getPaggingReq().getLimit());
         req.setRecordStatusIds(List.of(0L, 1L, 2L));
-        req.setMaNhaThuoc(getLoggedUser().getNhaThuoc().getMaNhaThuoc());
+        req.setMaNhaThuoc(getLoggedUser().getMaCoSo());
         return hdrRepo.searchPage(req, pageable);
     }
 
@@ -167,7 +167,8 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfile, UserPro
         }
         e = hdrRepo.save(e);
 
-        Optional<Role> role = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser().getNhaThuoc().getMaNhaThuoc(), 1, true, RoleTypeConstant.USER);
+        Optional<Role> role = this.roleService.findByMaNhaThuocAndTypeAndIsDefaultAndRoleName(getLoggedUser()
+                .getMaCoSo(), 1, true, RoleTypeConstant.USER);
         if (role.isEmpty()) {
             role = this.roleService.findByTypeAndIsDefaultAndRoleName(0, true, RoleTypeConstant.USER);
             if (role.isEmpty()) {
