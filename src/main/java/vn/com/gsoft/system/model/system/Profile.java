@@ -1,5 +1,6 @@
 package vn.com.gsoft.system.model.system;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import java.util.Set;
 public class Profile implements UserDetails, Serializable {
     private static final long serialVersionUID = 620L;
     private static final Log logger = LogFactory.getLog(Profile.class);
+    @JsonIgnore
     private String password;
     private String username;
     private Set<CodeGrantedAuthority> authorities;
@@ -27,12 +29,8 @@ public class Profile implements UserDetails, Serializable {
     private Long id;
 
     private String fullName;
-
-
-    private NhaThuocs nhaThuoc;
-
     private List<Role> roles;
-    private  String maCoSo;
+    private String maCoSo;
     private Long citiId;
     private Long regionId;
     private Long wardId;
@@ -40,16 +38,20 @@ public class Profile implements UserDetails, Serializable {
     private String soDienThoai;
     private String diaChi;
     private Boolean isAdmin;
+    private Integer soCoSo;
+    private String maNhaCha;
 
-    public Profile(Long id, String fullName, NhaThuocs nhaThuoc, List<Role> roles,
-                   String username, String password, boolean enabled, boolean accountNonExpired,
-                   boolean credentialsNonExpired, boolean accountNonLocked, Set<CodeGrantedAuthority> authorities,
-                   String maCoSo, Long citiId, Long regionId, Long wardId,
+
+    public Profile(Long id, String fullName,
+                   String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired,
+                   boolean accountNonLocked, Set<CodeGrantedAuthority> authorities,
+                   String maCoSo, long citiId, long regionId, long wardId,
                    String tenNhaThuoc, String soDienThoai, String diaChi,
-                   Boolean isAdmin) {
+                   Boolean isAdmin, Integer soCoSo, String maNhaCha
+
+    ) {
         this.id = id;
         this.fullName = fullName;
-        this.roles = roles;
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -65,5 +67,7 @@ public class Profile implements UserDetails, Serializable {
         this.soDienThoai = soDienThoai;
         this.diaChi = diaChi;
         this.isAdmin = isAdmin;
+        this.soCoSo = soCoSo;
+        this.maNhaCha = maNhaCha;
     }
 }

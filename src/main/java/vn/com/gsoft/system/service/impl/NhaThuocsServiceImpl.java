@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.com.gsoft.system.constant.RecordStatusContains;
@@ -19,6 +20,7 @@ import vn.com.gsoft.system.service.NhaThuocsService;
 import vn.com.gsoft.system.util.system.StoreHelper;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,7 +42,6 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     public NhaThuocsServiceImpl(NhaThuocsRepository hdrRepo, UserProfileRepository userProfileRepository,
                                 EntityRepository entityRepository, TinhThanhsRepository tinhThanhsRepository,
@@ -221,6 +222,16 @@ public class NhaThuocsServiceImpl extends BaseServiceImpl<NhaThuocs, NhaThuocsRe
             nhaThuoc.setLevel(entity.get().getName());
         }
         return nhaThuoc;
+    }
+
+    @Override
+    public List<NhaThuocs> dsByMaNhaCha(String code) throws Exception{
+        Profile userInfo = this.getLoggedUser();
+        if (userInfo == null)
+            throw new Exception("Bad request.");
+        if (userInfo.getSoCoSo() == null)
+            throw new Exception("Bad request.");
+        return hdrRepo.findByMaNhaChaAndRecordStatusId(code, RecordStatusContains.ACTIVE);
     }
 
     //region PRIVATE

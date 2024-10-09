@@ -35,7 +35,6 @@ public class NhaThuocsController {
         return ResponseEntity.ok(ResponseUtils.ok(service.searchList(objReq)));
     }
 
-
     @PostMapping(value = PathConstant.URL_CREATE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BaseResponse> insert(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
@@ -71,5 +70,10 @@ public class NhaThuocsController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BaseResponse> detailByMaNhaThuoc(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
         return ResponseEntity.ok(ResponseUtils.ok(service.detailByMa(objReq.getMaNhaThuoc())));
+    }
+    @PostMapping(value = "ds-by-ma-nha-thuoc-cha", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BaseResponse> dsByMaNhaThuocCha(@Valid @RequestBody NhaThuocsReq objReq) throws Exception {
+        return ResponseEntity.ok(ResponseUtils.ok(service.dsByMaNhaCha(objReq.getMaNhaCha())));
     }
 }

@@ -43,4 +43,5 @@ public class NhaThuocsReq extends BaseRequest {
     private String password;
     private boolean active;
     private Integer levelId;
+    private String maNhaCha;
 }
